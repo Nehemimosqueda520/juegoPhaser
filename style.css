@@ -2,3 +2,8 @@ canvas {
     display: block;
     margin: 0 auto;
   }
+
+#titulo {
+  text-align: center;
+  font-size:larger;
+}

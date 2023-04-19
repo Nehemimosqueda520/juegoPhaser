@@ -4,9 +4,9 @@ export class Game extends Phaser.Scene {
         super({key: 'game'})
     }
 
-    platformImpact() {
-        this.score++;
-        this.scoreText.setText('PUNTOS: ' + this.score);
+    init() {
+        this.score = 0;
+
     }
     
     preload ()
@@ -76,6 +76,9 @@ export class Game extends Phaser.Scene {
                 // Generar una nueva posición aleatoria y establecerla como la nueva posición del enemigo
                 enemy.x = Phaser.Math.Between(50, 750);
                 enemy.y = -10;
+
+                this.score += 1;
+                this.scoreText.setText('PUNTOS: ' + this.score);
                 
                 // Limitar la velocidad máxima
                 if (this.enemySpeed < this.maxEnemySpeed) {

@@ -32,11 +32,11 @@ export class Game extends Phaser.Scene {
         this.objeto.create(600, -10, 'enemy');
         this.objeto.create(700, -10, 'enemy');
 
-        this.scoreText = this.add.text(16, 16, 'PUNTOS: 0', { 
+        this.scoreText = this.add.text(16, 16, 'Points: 0', { 
             fontSize: '20px', 
             fill: '#fff', 
             fontFamily: 'verdana, arial, sans-serif' 
-          });
+        });
     
         this.platform = this.physics.add.sprite(400, 450, 'character');
         this.platform.body.allowGravity= false;
@@ -53,7 +53,7 @@ export class Game extends Phaser.Scene {
     }
 
     platformCrash() {
-
+        
     }
     
 
@@ -78,7 +78,7 @@ export class Game extends Phaser.Scene {
                 enemy.y = -10;
 
                 this.score += 1;
-                this.scoreText.setText('PUNTOS: ' + this.score);
+                this.scoreText.setText('Points: ' + this.score);
                 
                 // Limitar la velocidad máxima
                 if (this.enemySpeed < this.maxEnemySpeed) {

@@ -1,4 +1,5 @@
 import { Game } from "./game.js";
+import { MainMenu } from "./components/mainMenu.js";
 
 
 const config = {
@@ -11,7 +12,7 @@ const config = {
            
         }
     },
-    scene: [Game]
+    scene: [MainMenu, Game],
     
 };
 

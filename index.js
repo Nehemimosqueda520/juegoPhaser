@@ -1,5 +1,6 @@
 import { Game } from "./game.js";
 import { MainMenu } from "./components/mainMenu.js";
+import  {GameOver} from './components/gameOver.js';
 
 
 const config = {
@@ -9,10 +10,14 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-           
+    
         }
     },
-    scene: [MainMenu, Game],
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    scene: [MainMenu, Game, GameOver],
     
 };
 

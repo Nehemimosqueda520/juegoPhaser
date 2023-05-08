@@ -19,7 +19,7 @@ export class Game extends Phaser.Scene {
     
     create ()
     {
-        this.add.image(400, 300, 'background');
+        this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'background');
 
 
     
@@ -53,7 +53,7 @@ export class Game extends Phaser.Scene {
     }
 
     platformCrash() {
-        
+        this.scene.start('gameover');
     }
     
 

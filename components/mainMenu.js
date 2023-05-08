@@ -20,6 +20,9 @@ export class MainMenu extends Phaser.Scene {
     }
     create() {
         this.add.image(400, 300, 'background');
+
+        //add text that say "spaceshot
+        this.add.text(400, 200, 'Spaceshot', { fontSize: '40px', fill: '#fff' }).setOrigin(0.5, 0.5);
     
         this.startButton = this.add.sprite(400, 400, 'botonJugar').setScale(0.5).setInteractive();
     

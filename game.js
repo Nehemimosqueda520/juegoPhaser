@@ -74,7 +74,7 @@ export class Game extends Phaser.Scene {
         this.objeto.children.iterate(function(enemy) {
             if (enemy.y > 600) {
                 // Generar una nueva posición aleatoria y establecerla como la nueva posición del enemigo
-                enemy.x = Phaser.Math.Between(50, 750);
+                enemy.x = Phaser.Math.Between(0, 800);
                 enemy.y = -10;
 
                 this.score += 1;

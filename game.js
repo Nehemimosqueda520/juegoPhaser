@@ -80,11 +80,9 @@ export class Game extends Phaser.Scene {
                 this.score += 1;
                 this.scoreText.setText('Points: ' + this.score);
                 
-                // Limitar la velocidad máxima
-                if (this.enemySpeed < this.maxEnemySpeed) {
                     // Aumentar la velocidad cada vez que un enemigo se teletransporta
                     this.enemySpeed += 0.04;
-                }
+            
             } else {
                 enemy.y += this.enemySpeed;
             }

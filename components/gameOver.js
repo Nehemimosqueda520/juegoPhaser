@@ -1,5 +1,6 @@
 //create GameOver class for phaser game
 
+
 export class GameOver extends Phaser.Scene {
 constructor() {
     super("gameover");
@@ -14,19 +15,19 @@ preload() {
     this.load.image('restart', './assets/image/restart.png');
 }
 
-create() {
+create(data) {
 
     //ADD BACKGROUND 
     this.add.image(400, 300, 'background');
     //add text gameover 
-    this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'GAME OVER', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5, 0.5);
+    this.add.text(this.game.config.width / 2, this.game.config.height / 2 - 100, 'GAME OVER', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5, 0.5);
+    this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'Your score:'+ data.score, { fontSize: '32px', fill: '#fff' }).setOrigin(0.5, 0.5);
 
     //add restart button
     this.restartButton = this.add.image(this.game.config.width / 2, this.game.config.height / 2 + 100,'restart').setInteractive();
     this.restartButton.on('pointerdown', () => {
         this.scene.start('game');
-         //add text with actual score  
-    this.add.text(this.game.config.width / 2, this.game.config.height / 2 - 100, 'Score:'+ this.score, { fontSize: '32px', fill: '#fff' }).setOrigin(0.5, 0.5);
+    
     
     });
 

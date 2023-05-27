@@ -17,7 +17,6 @@ export class Game extends Phaser.Scene {
         this.load.image('background', './assets/image/background.png');
         this.load.image('asteroid', './assets/image/asteroid.png');
         this.load.audio('principalSong', './assets/audio/SpaceTripSong.mp3');
-        this.load.audio('gameOverSong', './assets/audio/GameOverSong.mp3');
     }
     
     create ()

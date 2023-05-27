@@ -21,17 +21,17 @@ export class MainMenu extends Phaser.Scene {
     create() {
         this.add.image(400, 300, 'background');
 
-        //add text that say "spaceshot
         this.add.text(400, 200, 'Spaceshot', { fontSize: '40px', fill: '#fff' }).setOrigin(0.5, 0.5);
-    
-        this.startButton = this.add.sprite(400, 400, 'botonJugar').setScale(0.5).setInteractive();
-    
-        this.startButton.on('pointerdown', () => {
-            this.scene.start('game'); // Agrega esta línea
-        });
+
+        //text that say "press any key to start" 
+        this.add.text(400, 300, 'Press any key to start', { fontSize: '20px', fill: '#fff' }).setOrigin(0.5, 0.5);
+
+        this.input.keyboard.on('keydown', this.startGame, this);
     }
     
-
+    startGame () {
+        this.scene.start('game');
+    }
     update ()
     {
     

@@ -6,7 +6,8 @@ export class GameOver extends Phaser.Scene {
     preload() {
         this.load.image('background', './assets/image/background.png');
         this.load.image('restart', './assets/image/restart.png');
-        this.load.audio('gameOverSong', './assets/audio/GameOverSong.mp3');
+       
+
     }
     
     create(data) {
@@ -21,13 +22,12 @@ export class GameOver extends Phaser.Scene {
 
         this.input.keyboard.on('keydown', this.restartGame, this);
 
-        this.gameOverSong = this.sound.add('gameOverSong');
-        this.gameOverSong.play();
+       
     }
     
     restartGame () {
         this.scene.start('game');
-        this.gameOverSong.stop();
+      
     }
 
     update() {

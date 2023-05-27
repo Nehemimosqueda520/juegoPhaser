@@ -14,8 +14,6 @@ export class MainMenu extends Phaser.Scene {
         this.load.image('botonJugar', './assets/image/play.png');
         this.load.image('character', './assets/image/character.png');
         this.load.image('background', './assets/image/background.png');
-        this.load.image('enemy', './assets/image/enemy.png');
-        this.load.image('weapon', './assets/image/weapon.png');
     
     }
     create() {

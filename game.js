@@ -16,6 +16,8 @@ export class Game extends Phaser.Scene {
         this.load.image('ship', './assets/image/ship.png');
         this.load.image('background', './assets/image/background.png');
         this.load.image('asteroid', './assets/image/asteroid.png');
+        this.load.audio('principalSong', './assets/audio/SpaceTripSong.mp3');
+        this.load.audio('gameOverSong', './assets/audio/GameOverSong.mp3');
     }
     
     create ()
@@ -35,11 +37,15 @@ export class Game extends Phaser.Scene {
         this.asteroid.create(450, -10, 'asteroid');
         this.asteroid.create(550, -10, 'asteroid');
         this.asteroid.create(650, -10, 'asteroid');
+
+        this.principalSong = this.sound.add('principalSong', {loop: true});
+        this.principalSong.play();
+
     
         this.scoreText = this.add.text(16, 16, 'Points: 0', { 
             fontSize: '20px', 
             fill: '#fff', 
-            fontFamily: 'verdana, arial, sans-serif' 
+            
         });
     
         this.ship = this.physics.add.sprite(400, 450, 'ship');
@@ -58,6 +64,7 @@ export class Game extends Phaser.Scene {
     
     shipCrash() {
         this.scene.start('gameover', { score: this.score });
+        this.principalSong.pause();
     }
     
     

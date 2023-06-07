@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Space Trip es un emocionante juego plataformero que te llevará a través de un viaje intergaláctico lleno de acción y desafíos. Embárcate en una misión para enfrentarte a peligrosos obstaculos enemigos y recolectar tesoros cósmicos mientras pilotas tu nave espacial.
+Space Trip es un emocionante juego plataformero desarrollado y producido por Nehemías Daniel Mosqueda que te llevará a través de un viaje intergaláctico lleno de acción y desafíos. Embárcate en una misión para enfrentarte a peligrosos obstaculos enemigos y recolectar tesoros cósmicos mientras pilotas tu nave espacial.
 
 ¡Prepárate para una experiencia de juego inmersiva en el vasto y misterioso universo!
 

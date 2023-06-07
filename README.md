@@ -43,4 +43,4 @@ Si deseas contribuir al desarrollo del juego, puedes hacerlo siguiendo estos pas
 
 1. Haz un fork del repositorio en GitHub.
 
-2 Clona el respositorio en tu maquina local
+2. Clona el respositorio en tu maquina local (Se recomienda trabajar desde la rama "Develop" o creando otra rama a partir de la ya mencionada)

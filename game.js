@@ -109,7 +109,29 @@ export class Game extends Phaser.Scene {
     
     //luego de los 200 puntos empiezan a caer 8 meteoritos por segundo
     if (this.score >= 200) {
-      if (currentTime - this.lastAsteroidTime >= 250/2) {
+      if (currentTime - this.lastAsteroidTime >= 125) {
+        const randomX = Phaser.Math.Between(0, this.game.config.width);
+        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
+        newAsteroid.setVelocityY(this.asteroidSpeed);
+        this.lastAsteroidTime = currentTime;
+        this.score = this.score + 1;
+        this.scoreText.setText("Puntos: " + this.score);
+      }
+    }
+
+    if (this.score >= 500) {
+      if (currentTime - this.lastAsteroidTime >= 62.5) {
+        const randomX = Phaser.Math.Between(0, this.game.config.width);
+        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
+        newAsteroid.setVelocityY(this.asteroidSpeed);
+        this.lastAsteroidTime = currentTime;
+        this.score = this.score + 1;
+        this.scoreText.setText("Puntos: " + this.score);
+      }
+    }
+
+    if (this.score >= 1000) {
+      if (currentTime - this.lastAsteroidTime >= 31.25) {
         const randomX = Phaser.Math.Between(0, this.game.config.width);
         const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
         newAsteroid.setVelocityY(this.asteroidSpeed);

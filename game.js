@@ -40,6 +40,11 @@ export class Game extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    this.keyCtrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
+    this.keyAlt = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT);
+    
+  
+
     // Establecer la velocidad máxima y la velocidad actual
 
     this.asteroidSpeed = 4;
@@ -54,10 +59,10 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || this.keyCtrl.isDown) {
       this.ship.setAngle(-20);
       this.ship.setVelocityX(-300);
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown || this.keyAlt.isDown) {
       this.ship.setAngle(20);
       this.ship.setVelocityX(300);
     } else {
@@ -84,7 +89,7 @@ export class Game extends Phaser.Scene {
     } 
 
     //Luego de los 50 puntos empiezan a caer 2 meteoritos por segundo
-    if (this.score >= 50) {
+    if (this.score >= 20) {
       if (currentTime - this.lastAsteroidTime >= 500) {
         const randomX = Phaser.Math.Between(0, this.game.config.width);
         const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
@@ -96,7 +101,7 @@ export class Game extends Phaser.Scene {
     }
 
     //luego de los 100 puntos empiezan a caer 4 meteoritos por segundo
-    if (this.score >= 100) {
+    if (this.score >= 50) {
       if (currentTime - this.lastAsteroidTime >= 250) {
         const randomX = Phaser.Math.Between(0, this.game.config.width);
         const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
@@ -108,7 +113,7 @@ export class Game extends Phaser.Scene {
     }
     
     //luego de los 200 puntos empiezan a caer 8 meteoritos por segundo
-    if (this.score >= 200) {
+    if (this.score >= 100) {
       if (currentTime - this.lastAsteroidTime >= 125) {
         const randomX = Phaser.Math.Between(0, this.game.config.width);
         const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
@@ -121,17 +126,6 @@ export class Game extends Phaser.Scene {
 
     if (this.score >= 500) {
       if (currentTime - this.lastAsteroidTime >= 62.5) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
-        newAsteroid.setVelocityY(this.asteroidSpeed);
-        this.lastAsteroidTime = currentTime;
-        this.score = this.score + 1;
-        this.scoreText.setText("Puntos: " + this.score);
-      }
-    }
-
-    if (this.score >= 1000) {
-      if (currentTime - this.lastAsteroidTime >= 31.25) {
         const randomX = Phaser.Math.Between(0, this.game.config.width);
         const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
         newAsteroid.setVelocityY(this.asteroidSpeed);

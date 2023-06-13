@@ -12,14 +12,35 @@ export class GameOver extends Phaser.Scene {
     //ADD BACKGROUND
     this.add.image(400, 300, "background");
     //add text gameover
-    this.add
-      .text(
-        this.game.config.width / 2,
-        this.game.config.height / 2 - 100,
-        "JUEGO TERMINADO",
-        { fontSize: "32px", fill: "#fff" }
-      )
-      .setOrigin(0.5, 0.5);
+
+    if (data.score < 10000) {
+      this.add
+        .text(
+          this.game.config.width / 2,
+          this.game.config.height / 2 - 100,
+          "JUEGO TERMINADO",
+          { fontSize: "32px", fill: "#fff" }
+        )
+        .setOrigin(0.5, 0.5);
+    } else if (data.score >= 10000 && data.score < 100000) {
+      this.add
+        .text(
+          this.game.config.width / 2,
+          this.game.config.height / 2 - 100,
+          "Felicidades",
+          { fontSize: "32px", fill: "#fff" }
+        )
+        .setOrigin(0.5, 0.5);
+    } else if (data.score >= 100000) {
+      this.add
+        .text(
+          this.game.config.width / 2,
+          this.game.config.height / 2 - 100,
+          "¡¡WOW!!",
+          { fontSize: "32px", fill: "#fff" }
+        )
+        .setOrigin(0.5, 0.5);
+    }
     this.add
       .text(
         this.game.config.width / 2,

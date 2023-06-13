@@ -30,7 +30,7 @@ export class Game extends Phaser.Scene {
       fill: "#fff",
     });
 
-    this.ship = this.physics.add.sprite(400, 450, "ship");
+    this.ship = this.physics.add.sprite(400, 450, "ship").setScale(0.35);
     this.ship.body.allowGravity = false;
     this.ship.setCollideWorldBounds(true);
 
@@ -66,6 +66,18 @@ export class Game extends Phaser.Scene {
     this.lastUfoTime = 500;
 
     this.coinTimee = 100;
+
+    //create un evento
+    this.lastAsteroidTimeTarget = 1000;
+    this.lastUfoTimeTarget = 500;
+    this.time.addEvent({
+      delay: 5000,
+      callback: this.updateTimmer,
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.zone = "left";
   }
 
   shipCrash() {
@@ -73,14 +85,14 @@ export class Game extends Phaser.Scene {
   }
 
   ufoCrash(ufo, ship) {
-    if (this.score < 100) {
-      this.score -= 10;
-    } else if (this.score >= 100 && this.score < 500) {
-      this.score -= 50;
-    } else if (this.score >= 500 && this.score < 1000) {
-      this.score -= 100;
-    } else {
+    if (this.score < 10000) {
       this.score -= 1000;
+    } else if (this.score >= 10000 && this.score < 50000) {
+      this.score -= 20000;
+    } else if (this.score >= 50000 && this.score < 100000) {
+      this.score -= 50000;
+    } else {
+      this.score -= 100000;
     }
 
     if (this.score < 0) {
@@ -115,88 +127,41 @@ export class Game extends Phaser.Scene {
 
     //cae un asteroide cada segundo hasta que se alcance los 50 puntos
     const currentTime = this.time.now;
-    if (currentTime - this.lastAsteroidTime >= 1000) {
-      const randomX = Phaser.Math.Between(0, this.game.config.width);
+
+    if (currentTime - this.lastAsteroidTime >= this.lastAsteroidTimeTarget) {
+      const randomX = this.getRandomX();
       const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
       newAsteroid.setVelocityY(this.asteroidSpeed);
       this.lastAsteroidTime = currentTime;
-      this.score = this.score + 1;
+      this.score = this.score + 1475;
       this.scoreText.setText("Puntos: " + this.score);
     }
 
-    if (currentTime - this.lastUfoTime >= 500) {
-      const randomX = Phaser.Math.Between(0, this.game.config.width);
+    if (currentTime - this.lastUfoTime >= this.lastUfoTimeTarget) {
+      const randomX = this.getRandomX();
       const newUfo = this.ufo.create(randomX, -10, "ufo");
       newUfo.setVelocityY(this.ufoSpeed);
       this.lastUfoTime = currentTime;
     }
+  }
 
-    //Luego de los 50 puntos empiezan a caer 2 meteoritos por segundo
-    if (this.score >= 20) {
-      if (currentTime - this.lastAsteroidTime >= 500) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
-        newAsteroid.setVelocityY(this.asteroidSpeed);
-        this.lastAsteroidTime = currentTime;
-        this.score = this.score + 1;
-        this.scoreText.setText("Puntos: " + this.score);
-      }
+  updateTimmer() {
+    this.lastAsteroidTimeTarget = this.lastAsteroidTimeTarget * 0.9;
+    this.lastUfoTimeTaget = this.lastUfoTimeTaget * 0.9;
+  }
 
-      if (currentTime - this.lastUfoTime >= 250) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newUfo = this.ufo.create(randomX, -10, "ufo");
-        newUfo.setVelocityY(this.ufoSpeed);
-        this.lastUfoTime = currentTime;
-      }
-    }
-
-    //luego de los 100 puntos empiezan a caer 4 meteoritos por segundo
-    if (this.score >= 50) {
-      if (currentTime - this.lastAsteroidTime >= 250) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
-        newAsteroid.setVelocityY(this.asteroidSpeed);
-        this.lastAsteroidTime = currentTime;
-        this.score = this.score + 1;
-        this.scoreText.setText("Puntos: " + this.score);
-      }
-
-      if (currentTime - this.lastUfoTime >= 125) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newUfo = this.ufo.create(randomX, -10, "ufo");
-        newUfo.setVelocityY(this.ufoSpeed);
-        this.lastUfoTime = currentTime;
-      }
-    }
-
-    //luego de los 200 puntos empiezan a caer 8 meteoritos por segundo
-    if (this.score >= 100) {
-      if (currentTime - this.lastAsteroidTime >= 125) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
-        newAsteroid.setVelocityY(this.asteroidSpeed);
-        this.lastAsteroidTime = currentTime;
-        this.score = this.score + 1;
-        this.scoreText.setText("Puntos: " + this.score);
-      }
-
-      if (currentTime - this.lastUfoTime >= 62.5) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newUfo = this.ufo.create(randomX, -10, "ufo");
-        newUfo.setVelocityY(this.ufoSpeed);
-        this.lastUfoTime = currentTime;
-      }
-    }
-
-    if (this.score >= 500) {
-      if (currentTime - this.lastAsteroidTime >= 62.5) {
-        const randomX = Phaser.Math.Between(0, this.game.config.width);
-        const newAsteroid = this.asteroid.create(randomX, -10, "asteroid");
-        newAsteroid.setVelocityY(this.asteroidSpeed);
-        this.lastAsteroidTime = currentTime;
-        this.score = this.score + 1;
-        this.scoreText.setText("Puntos: " + this.score);
-      }
+  getRandomX() {
+    if (this.zone === "left") {
+      const randomX = Phaser.Math.Between(0, this.game.config.width / 2);
+      this.zone = "right";
+      return randomX;
+    } else {
+      const randomX = Phaser.Math.Between(
+        this.game.config.width / 2,
+        this.game.config.width
+      );
+      this.zone = "left";
+      return randomX;
     }
   }
 }

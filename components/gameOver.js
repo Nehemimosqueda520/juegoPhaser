@@ -33,17 +33,17 @@ export class GameOver extends Phaser.Scene {
       .text(
         this.game.config.width / 2,
         this.game.config.height / 2 + 100,
-        "Presiona cualquier tecla para reiniciar",
+        "Presiona la tecla R para reiniciar",
         { fontSize: "20px", fill: "#fff" }
       )
       .setOrigin(0.5, 0.5);
 
-    this.input.keyboard.on("keydown", this.restartGame, this);
+    this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
   }
 
-  restartGame() {
-    this.scene.start("game");
+  update() {
+    if (this.keyR.isDown) {
+      this.scene.start("game");
+    }
   }
-
-  update() {}
 }

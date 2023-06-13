@@ -19,7 +19,21 @@ export class MainMenu extends Phaser.Scene {
 
     //text that say "press any key to start"
     this.add
-      .text(400, 300, "Presiona cualquier tecla para comenzar", {
+      .text(400, 450, "Presiona cualquier tecla para comenzar", {
+        fontSize: "20px",
+        fill: "#fff",
+      })
+      .setOrigin(0.5, 0.5);
+
+    this.add
+      .text(400, 300, "Desarrollado, programado y creado por:", {
+        fontSize: "20px",
+        fill: "#fff",
+      })
+      .setOrigin(0.5, 0.5);
+
+    this.add
+      .text(400, 350, "Nehemías Daniel Mosqueda", {
         fontSize: "20px",
         fill: "#fff",
       })

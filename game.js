@@ -14,8 +14,8 @@ export class Game extends Phaser.Scene {
     this.load.image("asteroid", "./assets/image/asteroid.png");
     this.load.spritesheet('ufo', './assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
     this.load.audio('PrincipalSong', './assets/audio/SpaceTripSong.mp3');
-
-
+    this.load.audio ("damage", "./assets/audio/damage.mp3");
+    this.load.audio ("explosion", "./assets/audio/explosion.mp3");
   }
 
   create() {
@@ -28,6 +28,10 @@ export class Game extends Phaser.Scene {
     this.principalSong = this.sound.add('PrincipalSong');
     this.principalSong.play();
     this.principalSong.loop = true;
+
+    this.damage =this.sound.add('damage');
+
+    this.explosion =this.sound.add('explosion');
   
 
     this.asteroid = this.physics.add.group();
@@ -106,11 +110,13 @@ export class Game extends Phaser.Scene {
   shipCrash() {
     this.scene.start("gameover", { score: this.score });
     this.principalSong.loop = false;
-    this.principalSong.stop ()
+    this.principalSong.stop();
+    this.damage.stop();
+    this.explosion.play();
   }
 
   ufoCrash(ufo, ship) {
-
+    this.damage.play();
     this.health -= 1 ;
    
 

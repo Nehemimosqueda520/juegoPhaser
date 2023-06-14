@@ -7,7 +7,6 @@ export class GameOver extends Phaser.Scene {
     this.load.image("background", "./assets/image/background.png");
     this.load.image("restart", "./assets/image/restart.png");
     this.load.audio ( "gameOverSong", "./assets/audio/gameOverSong.mp3");
-    this.load.audio ( "victorySong", "./assets/audio/VictorySong.mp3");
   }
 
   create(data) {
@@ -16,10 +15,9 @@ export class GameOver extends Phaser.Scene {
     //add text gameover
 
     this.gameOverSong = this.sound.add("gameOverSong");
-    this.victorySong = this.sound.add("victorySong");
     
 
-    if (data.score < 10000) {
+    
       this.add
         .text(
           this.game.config.width / 2,
@@ -30,28 +28,6 @@ export class GameOver extends Phaser.Scene {
         .setOrigin(0.5, 0.5);
 
         this.gameOverSong.play();
-    } else if (data.score >= 10000 && data.score < 100000) {
-      this.add
-        .text(
-          this.game.config.width / 2,
-          this.game.config.height / 2 - 100,
-          "Felicidades",
-          { fontSize: "32px", fill: "#fff" }
-        )
-        .setOrigin(0.5, 0.5);
-        this.gameOverSong.play();
-    } else if (data.score >= 100000) {
-      this.add
-        .text(
-          this.game.config.width / 2,
-          this.game.config.height / 2 - 100,
-          "¡¡WOW!!",
-          { fontSize: "32px", fill: "#fff" }
-        )
-        .setOrigin(0.5, 0.5);
-
-        this.victorySong.play();
-    }
     this.add
       .text(
         this.game.config.width / 2,
@@ -76,8 +52,7 @@ export class GameOver extends Phaser.Scene {
   update() {
     if (this.keyR.isDown) {
       this.scene.start("game");
-      this.gameOverSong.stop ();
-      this.victorySong.stop();
+      this.gameOverSong.stop ()
     }
   }
 }

@@ -4,14 +4,18 @@ export class Game extends Phaser.Scene {
   }
 
   init() {
-    this.score = 0;
+    this.score = 1;
+    this.health = 10;
   }
 
   preload() {
     this.load.image("ship", "./assets/image/ship.png");
     this.load.image("background", "./assets/image/background.png");
     this.load.image("asteroid", "./assets/image/asteroid.png");
-    this.load.image("ufo", "./assets/image/ufo.png");
+    this.load.spritesheet('ufo', './assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
+    this.load.audio('PrincipalSong', './assets/audio/SpaceTripSong.mp3');
+
+
   }
 
   create() {
@@ -21,18 +25,37 @@ export class Game extends Phaser.Scene {
       "background"
     );
 
+    this.principalSong = this.sound.add('PrincipalSong');
+    this.principalSong.play();
+    this.principalSong.loop = true;
+  
+
     this.asteroid = this.physics.add.group();
 
-    this.ufo = this.physics.add.group();
 
     this.scoreText = this.add.text(16, 16, "Puntos: 0", {
       fontSize: "20px",
       fill: "#fff",
     });
 
+    this.healthText = this.add.text(740, 30, "vidas: 10", {
+      fontSize: "20px",
+      fill: "#fff",
+    }).setOrigin(0.5);
+
     this.ship = this.physics.add.sprite(400, 450, "ship").setScale(0.35);
     this.ship.body.allowGravity = false;
     this.ship.setCollideWorldBounds(true);
+
+    
+    this.ufo = this.physics.add.group();
+
+    this.anims.create({
+      key: 'ufoAnimation',
+      frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 3 }),
+      frameRate: 20,
+      repeat: 5 // Repetir la animación indefinidamente
+    });
 
     this.physics.add.collider(
       this.asteroid,
@@ -82,25 +105,21 @@ export class Game extends Phaser.Scene {
 
   shipCrash() {
     this.scene.start("gameover", { score: this.score });
+    this.principalSong.loop = false;
+    this.principalSong.stop ()
   }
 
   ufoCrash(ufo, ship) {
-    if (this.score < 10000) {
-      this.score -= 1000;
-    } else if (this.score >= 10000 && this.score < 50000) {
-      this.score -= 20000;
-    } else if (this.score >= 50000 && this.score < 100000) {
-      this.score -= 50000;
-    } else {
-      this.score -= 100000;
-    }
 
-    if (this.score < 0) {
-      this.score = 0;
-    }
+    this.health -= 1 ;
+   
 
-    this.scoreText.setText("Puntos: " + this.score);
+    this.healthText.setText("Vidas: " + this.health);
     ship.disableBody(true, true);
+
+    if (this.health <= 0) {
+      this.shipCrash();
+    }
   }
 
   update() {
@@ -114,6 +133,10 @@ export class Game extends Phaser.Scene {
       this.ship.setAngle(0);
       this.ship.setVelocity(0, 0);
     }
+
+    
+    
+
     //hacer que un nuevo asteroide caiga cada un segundo
     this.asteroid.children.iterate(function (asteroid) {
       asteroid.y += this.asteroidSpeed;
@@ -121,6 +144,7 @@ export class Game extends Phaser.Scene {
 
     this.ufo.children.iterate(function (ufo) {
       ufo.y += this.ufoSpeed;
+      ufo.anims.play('ufoAnimation');
     }, this);
 
     //aqui empiezan los tiempos en los que caen los asteroides
@@ -140,6 +164,7 @@ export class Game extends Phaser.Scene {
     if (currentTime - this.lastUfoTime >= this.lastUfoTimeTarget) {
       const randomX = this.getRandomX();
       const newUfo = this.ufo.create(randomX, -10, "ufo");
+      newUfo.anims.play('ufoAnimation');
       newUfo.setVelocityY(this.ufoSpeed);
       this.lastUfoTime = currentTime;
     }
@@ -147,7 +172,8 @@ export class Game extends Phaser.Scene {
 
   updateTimmer() {
     this.lastAsteroidTimeTarget = this.lastAsteroidTimeTarget * 0.9;
-    this.lastUfoTimeTaget = this.lastUfoTimeTaget * 0.9;
+    this.lastUfoTimeTarget = this.lastUfoTimeTarget * 0.9;
+
   }
 
   getRandomX() {

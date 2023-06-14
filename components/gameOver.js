@@ -4,9 +4,9 @@ export class GameOver extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "./assets/image/background.png");
-    this.load.image("restart", "./assets/image/restart.png");
-    this.load.audio ( "gameOverSong", "./assets/audio/gameOverSong.mp3");
+    this.load.image("background", "./public/assets/image/background.png");
+    this.load.image("restart", "./public/assets/image/restart.png");
+    this.load.audio ( "gameOverSong", "./public/assets/audio/gameOverSong.mp3");
   }
 
   create(data) {

@@ -6,10 +6,10 @@ export class MainMenu extends Phaser.Scene {
   init() {}
 
   preload() {
-    this.load.image("botonJugar", "./assets/image/play.png");
-    this.load.image("character", "./assets/image/character.png");
-    this.load.image("background", "./assets/image/background.png");
-    this.load.audio ("MainMenuSong", "./assets/audio/mainMenuSong.mp3");
+    this.load.image("botonJugar", "./public/assets/image/play.png");
+    this.load.image("character", "./public/assets/image/character.png");
+    this.load.image("background", "./public/assets/image/background.png");
+    this.load.audio ("MainMenuSong", "./public/assets/audio/mainMenuSong.mp3");
   }
   create() {
     this.add.image(400, 300, "background");

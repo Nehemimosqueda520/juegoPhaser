@@ -9,13 +9,13 @@ export class Game extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("ship", "./assets/image/ship.png");
-    this.load.image("background", "./assets/image/background.png");
-    this.load.image("asteroid", "./assets/image/asteroid.png");
-    this.load.spritesheet('ufo', './assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
-    this.load.audio('PrincipalSong', './assets/audio/SpaceTripSong2.mp3');
-    this.load.audio ("damage", "./assets/audio/damage.mp3");
-    this.load.audio ("explosion", "./assets/audio/explosion.mp3");
+    this.load.image("ship", "./public/assets/image/ship.png");
+    this.load.image("background", "./public/assets/image/background.png");
+    this.load.image("asteroid", "./public/assets/image/asteroid.png");
+    this.load.spritesheet('ufo', './public/assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
+    this.load.audio('PrincipalSong', './public/assets/audio/SpaceTripSong2.mp3');
+    this.load.audio ("damage", "./public/assets/audio/damage.mp3");
+    this.load.audio ("explosion", "./public/assets/audio/explosion.mp3");
   }
 
   create() {

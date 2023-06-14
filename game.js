@@ -13,7 +13,7 @@ export class Game extends Phaser.Scene {
     this.load.image("background", "./assets/image/background.png");
     this.load.image("asteroid", "./assets/image/asteroid.png");
     this.load.spritesheet('ufo', './assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
-    this.load.audio('PrincipalSong', './assets/audio/SpaceTripSong.mp3');
+    this.load.audio('PrincipalSong', './assets/audio/SpaceTripSong2.mp3');
     this.load.audio ("damage", "./assets/audio/damage.mp3");
     this.load.audio ("explosion", "./assets/audio/explosion.mp3");
   }
@@ -28,14 +28,14 @@ export class Game extends Phaser.Scene {
     this.principalSong = this.sound.add('PrincipalSong');
     this.principalSong.play();
     this.principalSong.loop = true;
+    
+    
 
     this.damage =this.sound.add('damage');
 
     this.explosion =this.sound.add('explosion');
-  
 
     this.asteroid = this.physics.add.group();
-
 
     this.scoreText = this.add.text(16, 16, "Puntos: 0", {
       fontSize: "20px",
@@ -109,7 +109,7 @@ export class Game extends Phaser.Scene {
 
   shipCrash() {
     this.scene.start("gameover", { score: this.score });
-    this.principalSong.loop = false;
+    this.principalSong.loop = false
     this.principalSong.stop();
     this.damage.stop();
     this.explosion.play();
@@ -140,8 +140,7 @@ export class Game extends Phaser.Scene {
       this.ship.setVelocity(0, 0);
     }
 
-    
-    
+     
 
     //hacer que un nuevo asteroide caiga cada un segundo
     this.asteroid.children.iterate(function (asteroid) {
@@ -152,6 +151,8 @@ export class Game extends Phaser.Scene {
       ufo.y += this.ufoSpeed;
       ufo.anims.play('ufoAnimation');
     }, this);
+
+   
 
     //aqui empiezan los tiempos en los que caen los asteroides
 

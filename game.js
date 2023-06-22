@@ -1,21 +1,26 @@
 export class Game extends Phaser.Scene {
   constructor() {
     super({ key: "game" });
+    this.lastBatteryDecreaseTime = 0;
   }
 
   init() {
     this.score = 1;
     this.health = 10;
+    this.battery = 100;
+    this.batteryDecreaseInterval = 750;
   }
 
   preload() {
     this.load.image("ship", "./public/assets/image/ship.png");
     this.load.image("background", "./public/assets/image/background.png");
     this.load.image("asteroid", "./public/assets/image/asteroid.png");
-    this.load.spritesheet('ufo', './public/assets/image/ufo.png', { frameWidth: 30, frameHeight: 30 });
+    this.load.image("battery", "./public/assets/image/battery.png");
+    this.load.image ('ufo', './public/assets/image/ufo.png');
     this.load.audio('PrincipalSong', './public/assets/audio/SpaceTripSong2.mp3');
     this.load.audio ("damage", "./public/assets/audio/damage.mp3");
     this.load.audio ("explosion", "./public/assets/audio/explosion.mp3");
+    this.load.audio ( "energy", "./public/assets/audio/energySound.mp3");
   }
 
   create() {
@@ -28,21 +33,32 @@ export class Game extends Phaser.Scene {
     this.principalSong = this.sound.add('PrincipalSong');
     this.principalSong.play();
     this.principalSong.loop = true;
+
+    this.energySound = this.sound.add('energy');
     
     
 
     this.damage =this.sound.add('damage');
 
+    this.batteryIcon = this.physics.add.group();
+
     this.explosion =this.sound.add('explosion');
 
     this.asteroid = this.physics.add.group();
 
-    this.scoreText = this.add.text(16, 16, "Puntos: 0", {
+    
+
+    this.scoreText = this.add.text(16, 30, "Puntos: 0", {
       fontSize: "20px",
       fill: "#fff",
     });
 
     this.healthText = this.add.text(740, 30, "vidas: 10", {
+      fontSize: "20px",
+      fill: "#fff",
+    }).setOrigin(0.5);
+
+    this.batteryText = this.add.text(this.game.config.width / 2, 30, "Batería: 100%", {
       fontSize: "20px",
       fill: "#fff",
     }).setOrigin(0.5);
@@ -54,13 +70,7 @@ export class Game extends Phaser.Scene {
     
     this.ufo = this.physics.add.group();
 
-    this.anims.create({
-      key: 'ufoAnimation',
-      frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 3 }),
-      frameRate: 20,
-      repeat: 5 // Repetir la animación indefinidamente
-    });
-
+    
     this.physics.add.collider(
       this.asteroid,
       this.ship,
@@ -72,6 +82,13 @@ export class Game extends Phaser.Scene {
       this.ufo,
       this.ship,
       this.ufoCrash.bind(this),
+      null
+    );
+
+    this.physics.add.collider(
+      this.batteryIcon,
+      this.ship,
+      this.batteryCrash.bind(this),
       null
     );
 
@@ -88,15 +105,16 @@ export class Game extends Phaser.Scene {
 
     this.asteroidSpeed = 4;
     this.ufoSpeed = 4;
+    this.batterySpeed = 4;
 
     this.lastAsteroidTime = 0;
     this.lastUfoTime = 500;
-
-    this.coinTimee = 100;
+    this.lastBatteryTime = 500;
 
     //create un evento
     this.lastAsteroidTimeTarget = 1000;
     this.lastUfoTimeTarget = 500;
+    this.lastBatteryTimeTarget = 20000;
     this.time.addEvent({
       delay: 5000,
       callback: this.updateTimmer,
@@ -128,6 +146,13 @@ export class Game extends Phaser.Scene {
     }
   }
 
+  batteryCrash(ship, batteryIcon) {
+    this.battery += 10;
+    batteryIcon.disableBody(true, true);
+    this.batteryText.setText ("Batería: " + this.battery + "%");
+    this.energySound.play();
+  }
+
   update() {
     if (this.cursors.left.isDown || this.keyCtrl.isDown) {
       this.ship.setAngle(-20);
@@ -149,9 +174,11 @@ export class Game extends Phaser.Scene {
 
     this.ufo.children.iterate(function (ufo) {
       ufo.y += this.ufoSpeed;
-      ufo.anims.play('ufoAnimation');
     }, this);
 
+    this.batteryIcon.children.iterate(function (batteryIcon) {
+      batteryIcon.y += this.batterySpeed;
+    }, this);
    
 
     //aqui empiezan los tiempos en los que caen los asteroides
@@ -175,11 +202,36 @@ export class Game extends Phaser.Scene {
       newUfo.setVelocityY(this.ufoSpeed);
       this.lastUfoTime = currentTime;
     }
+
+    if (currentTime - this.lastBatteryTime >= this.lastBatteryTimeTarget) {
+      const randomX = this.getRandomX();
+      const newBattery = this.batteryIcon.create(randomX, -10, "battery");
+      newBattery.setVelocityY(this.batterySpeed);
+      this.lastBatteryTime = currentTime;
+    }
+
+    if (currentTime - this.lastBatteryDecreaseTime >= this.batteryDecreaseInterval) {
+      this.battery -= 1;
+      this.lastBatteryDecreaseTime = currentTime;
+      this.batteryText.setText("Batería: " + this.battery + "%");
   }
 
+    if (this.battery <= 0) {
+      this.scene.start("gameover", { score: this.score });
+      this.principalSong.stop();
+      this.principalSong.loop = false;
+    }
+
+    if (this.battery > 100) {
+      this.battery = 100;
+      this.batteryText.setText("Batería: " + this.battery + "%");
+    }
+   
+  }
   updateTimmer() {
     this.lastAsteroidTimeTarget = this.lastAsteroidTimeTarget * 0.9;
     this.lastUfoTimeTarget = this.lastUfoTimeTarget * 0.9;
+    this.lastBatteryTimeTarget = this.lastBatteryTimeTarget * 0.9;
 
   }
 

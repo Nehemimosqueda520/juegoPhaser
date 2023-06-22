@@ -5,22 +5,26 @@ export class Game extends Phaser.Scene {
   }
 
   init() {
-    this.score = 1;
+    this.score = 0;
     this.health = 10;
     this.battery = 100;
     this.batteryDecreaseInterval = 750;
   }
 
   preload() {
+    // Images are loaded
     this.load.image("ship", "./public/assets/image/ship.png");
     this.load.image("background", "./public/assets/image/background.png");
     this.load.image("asteroid", "./public/assets/image/asteroid.png");
     this.load.image("battery", "./public/assets/image/battery.png");
     this.load.image ('ufo', './public/assets/image/ufo.png');
+    this.load.image("heart", "./public/assets/image/heart.png");
+    // Audio is loaded
     this.load.audio('PrincipalSong', './public/assets/audio/SpaceTripSong2.mp3');
     this.load.audio ("damage", "./public/assets/audio/damage.mp3");
     this.load.audio ("explosion", "./public/assets/audio/explosion.mp3");
     this.load.audio ( "energy", "./public/assets/audio/energySound.mp3");
+    this.load.audio ("life", "./public/assets/audio/lifeSound.mp3");
   }
 
   create() {
@@ -35,12 +39,16 @@ export class Game extends Phaser.Scene {
     this.principalSong.loop = true;
 
     this.energySound = this.sound.add('energy');
+
+    this.lifeSound = this.sound.add('life');
     
     
 
     this.damage =this.sound.add('damage');
 
     this.batteryIcon = this.physics.add.group();
+
+    this.heart = this.physics.add.group();
 
     this.explosion =this.sound.add('explosion');
 
@@ -53,7 +61,7 @@ export class Game extends Phaser.Scene {
       fill: "#fff",
     });
 
-    this.healthText = this.add.text(740, 30, "vidas: 10", {
+    this.healthText = this.add.text(740, 30, "Vidas: 10", {
       fontSize: "20px",
       fill: "#fff",
     }).setOrigin(0.5);
@@ -92,6 +100,14 @@ export class Game extends Phaser.Scene {
       null
     );
 
+    //add collider between heart and ship
+    this.physics.add.collider(
+      this.heart,
+      this.ship,
+      this.heartCrash.bind(this),
+      null
+    );
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.keyCtrl = this.input.keyboard.addKey(
@@ -106,15 +122,18 @@ export class Game extends Phaser.Scene {
     this.asteroidSpeed = 4;
     this.ufoSpeed = 4;
     this.batterySpeed = 4;
+    this.heartSpeed = 4;
 
     this.lastAsteroidTime = 0;
     this.lastUfoTime = 500;
     this.lastBatteryTime = 500;
+    this.lastHeartTime = 500;
 
     //create un evento
     this.lastAsteroidTimeTarget = 1000;
     this.lastUfoTimeTarget = 500;
     this.lastBatteryTimeTarget = 20000;
+    this.lastHeartTimeTarget = 40000;
     this.time.addEvent({
       delay: 5000,
       callback: this.updateTimmer,
@@ -153,6 +172,13 @@ export class Game extends Phaser.Scene {
     this.energySound.play();
   }
 
+  heartCrash(ship, heart) {
+    this.health += 1;
+    this.healthText.setText ("Vidas: " + this.health);
+    heart.disableBody(true, true);
+    this.lifeSound.play();
+  }
+
   update() {
     if (this.cursors.left.isDown || this.keyCtrl.isDown) {
       this.ship.setAngle(-20);
@@ -178,6 +204,10 @@ export class Game extends Phaser.Scene {
 
     this.batteryIcon.children.iterate(function (batteryIcon) {
       batteryIcon.y += this.batterySpeed;
+    }, this);
+
+    this.heart.children.iterate(function (heart) {
+      heart.y += this.heartSpeed;
     }, this);
    
 
@@ -210,6 +240,14 @@ export class Game extends Phaser.Scene {
       this.lastBatteryTime = currentTime;
     }
 
+    if (currentTime - this.lastHeartTime >= this.lastHeartTimeTarget) {
+      const randomX = this.getRandomX();
+      const newHeart = this.heart.create(randomX, -10, "heart");
+      newHeart.setVelocityY(this.heartSpeed);
+      this.lastHeartTime = currentTime;
+    }
+
+
     if (currentTime - this.lastBatteryDecreaseTime >= this.batteryDecreaseInterval) {
       this.battery -= 1;
       this.lastBatteryDecreaseTime = currentTime;
@@ -232,6 +270,7 @@ export class Game extends Phaser.Scene {
     this.lastAsteroidTimeTarget = this.lastAsteroidTimeTarget * 0.9;
     this.lastUfoTimeTarget = this.lastUfoTimeTarget * 0.9;
     this.lastBatteryTimeTarget = this.lastBatteryTimeTarget * 0.9;
+    this.lastHeartTimeTarget = this.lastHeartTimeTarget * 0.9;
 
   }
 

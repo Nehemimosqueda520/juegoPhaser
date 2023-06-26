@@ -28,12 +28,15 @@ export class Game extends Phaser.Scene {
   }
 
   create() {
+
+    //add background
     this.add.image(
       this.game.config.width / 2,
       this.game.config.height / 2,
       "background"
     );
-
+    
+    //add principal song
     this.principalSong = this.sound.add('PrincipalSong');
     this.principalSong.play();
     this.principalSong.loop = true;
@@ -71,6 +74,7 @@ export class Game extends Phaser.Scene {
       fill: "#fff",
     }).setOrigin(0.5);
 
+    //add ship
     this.ship = this.physics.add.sprite(400, 450, "ship").setScale(0.35);
     this.ship.body.allowGravity = false;
     this.ship.setCollideWorldBounds(true);
@@ -78,7 +82,7 @@ export class Game extends Phaser.Scene {
     
     this.ufo = this.physics.add.group();
 
-    
+    //colliders
     this.physics.add.collider(
       this.asteroid,
       this.ship,
@@ -100,7 +104,6 @@ export class Game extends Phaser.Scene {
       null
     );
 
-    //add collider between heart and ship
     this.physics.add.collider(
       this.heart,
       this.ship,
@@ -108,6 +111,8 @@ export class Game extends Phaser.Scene {
       null
     );
 
+
+    //input 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.keyCtrl = this.input.keyboard.addKey(
@@ -117,7 +122,7 @@ export class Game extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.ALT
     );
 
-    // Establecer la velocidad máxima y la velocidad actual
+    //some parameters and data
 
     this.asteroidSpeed = 4;
     this.ufoSpeed = 4;
@@ -129,11 +134,14 @@ export class Game extends Phaser.Scene {
     this.lastBatteryTime = 500;
     this.lastHeartTime = 500;
 
-    //create un evento
     this.lastAsteroidTimeTarget = 1000;
     this.lastUfoTimeTarget = 500;
     this.lastBatteryTimeTarget = 20000;
     this.lastHeartTimeTarget = 40000;
+
+    this.zone = "left";
+
+    //event
     this.time.addEvent({
       delay: 5000,
       callback: this.updateTimmer,
@@ -141,7 +149,7 @@ export class Game extends Phaser.Scene {
       loop: true,
     });
 
-    this.zone = "left";
+    
   }
 
   shipCrash() {
@@ -180,6 +188,8 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
+
+    //ship controls
     if (this.cursors.left.isDown || this.keyCtrl.isDown) {
       this.ship.setAngle(-20);
       this.ship.setVelocity(-300, 0);
@@ -193,7 +203,7 @@ export class Game extends Phaser.Scene {
 
      
 
-    //hacer que un nuevo asteroide caiga cada un segundo
+    //create the objects
     this.asteroid.children.iterate(function (asteroid) {
       asteroid.y += this.asteroidSpeed;
     }, this);
@@ -210,10 +220,6 @@ export class Game extends Phaser.Scene {
       heart.y += this.heartSpeed;
     }, this);
    
-
-    //aqui empiezan los tiempos en los que caen los asteroides
-
-    //cae un asteroide cada segundo hasta que se alcance los 50 puntos
     const currentTime = this.time.now;
 
     if (currentTime - this.lastAsteroidTime >= this.lastAsteroidTimeTarget) {

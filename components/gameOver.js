@@ -6,12 +6,14 @@ export class GameOver extends Phaser.Scene {
   preload() {
     this.load.image("background", "./public/assets/image/background.png");
     this.load.image("restart", "./public/assets/image/restart.png");
+    this.load.image("blur", "./public/assets/image/gameOverBlur.png");
     this.load.audio ( "gameOverSong", "./public/assets/audio/gameOverSong.mp3");
   }
 
   create(data) {
     //ADD BACKGROUND
     this.add.image(400, 300, "background");
+    this.add.image(400, 300, "blur");
     //add text gameover
 
     this.gameOverSong = this.sound.add("gameOverSong");
@@ -23,7 +25,7 @@ export class GameOver extends Phaser.Scene {
           this.game.config.width / 2,
           this.game.config.height / 2 - 100,
           "JUEGO TERMINADO",
-          { fontSize: "32px", fill: "#fff" }
+          { fontSize: "35px", fontFamily: "Gotham", fill: "#EF3E66" }
         )
         .setOrigin(0.5, 0.5);
 

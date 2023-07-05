@@ -115,11 +115,11 @@ export class Game extends Phaser.Scene {
     //input 
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.keyCtrl = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.CTRL
+    this.keyA = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.A
     );
-    this.keyAlt = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ALT
+    this.keyD = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.D
     );
 
     //some parameters and data
@@ -188,20 +188,17 @@ export class Game extends Phaser.Scene {
   }
 
   update() {
-
     //ship controls
-    if (this.cursors.left.isDown || this.keyCtrl.isDown) {
+    if (this.cursors.left.isDown || this.keyA.isDown) {
       this.ship.setAngle(-20);
       this.ship.setVelocity(-300, 0);
-    } else if (this.cursors.right.isDown || this.keyAlt.isDown) {
+    } else if (this.cursors.right.isDown || this.keyD.isDown) {
       this.ship.setAngle(20);
       this.ship.setVelocity(300, 0);
     } else {
       this.ship.setAngle(0);
       this.ship.setVelocity(0, 0);
     }
-
-     
 
     //create the objects
     this.asteroid.children.iterate(function (asteroid) {
@@ -219,7 +216,7 @@ export class Game extends Phaser.Scene {
     this.heart.children.iterate(function (heart) {
       heart.y += this.heartSpeed;
     }, this);
-   
+  
     const currentTime = this.time.now;
 
     if (currentTime - this.lastAsteroidTime >= this.lastAsteroidTimeTarget) {
@@ -270,14 +267,14 @@ export class Game extends Phaser.Scene {
       this.battery = 100;
       this.batteryText.setText("Batería: " + this.battery + "%");
     }
-   
+  
   }
+
   updateTimmer() {
     this.lastAsteroidTimeTarget = this.lastAsteroidTimeTarget * 0.9;
     this.lastUfoTimeTarget = this.lastUfoTimeTarget * 0.9;
     this.lastBatteryTimeTarget = this.lastBatteryTimeTarget * 0.9;
     this.lastHeartTimeTarget = this.lastHeartTimeTarget * 0.9;
-
   }
 
   getRandomX() {
